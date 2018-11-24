@@ -1,4 +1,3 @@
-import pytest
 from bayes_opt.bayesian_optimization import Observable
 
 
@@ -69,4 +68,5 @@ if __name__ == '__main__':
     CommandLine:
         python tests/test_observer.py
     """
+    import pytest
     pytest.main([__file__])
