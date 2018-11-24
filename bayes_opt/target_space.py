@@ -243,6 +243,6 @@ class TargetSpace(object):
         new_bounds : dict
             A dictionary with the parameter name and its new bounds
         """
-        for row, key in enumerate(self._keys):
+        for row, key in enumerate(self.keys):
             if key in new_bounds:
                 self._bounds[row] = new_bounds[key]
