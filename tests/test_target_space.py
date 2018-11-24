@@ -1,4 +1,3 @@
-import pytest
 import numpy as np
 from bayes_opt.target_space import TargetSpace
 
@@ -172,4 +171,5 @@ if __name__ == '__main__':
     CommandLine:
         python tests/test_target_space.py
     """
+    import pytest
     pytest.main([__file__])
