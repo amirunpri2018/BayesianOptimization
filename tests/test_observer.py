@@ -16,38 +16,52 @@ class SimpleObserver():
 def test_get_subscribers():
     observer = SimpleObserver()
     observable = Observable(events=EVENTS)
-
     observable.subscribe("a", observer)
+
     assert observer in observable.get_subscribers('a')
     assert observer not in observable.get_subscribers('b')
     assert observer not in observable.get_subscribers('c')
 
-    assert len(observable.get_subscribers('a')) == 1)
-    assert len(observable.get_subscribers('b')) == 0)
-    assert len(observable.get_subscribers('c')) == 0)
+    assert len(observable.get_subscribers('a')) == 1
+    assert len(observable.get_subscribers('b')) == 0
+    assert len(observable.get_subscribers('c')) == 0
 
-# class TestObserverPattern(unittest.TestCase):
-#     def setUp(self):
-#         events = ['a', 'b']
-#         self.observable = Observable(events)
-#         self.observer = TestObserver()
 
-#     def test_register(self):
-#         self.observable.register('a', self.observer)
-#         self.assertTrue(self.observer in self.observable.get_subscribers('a'))
+def test_unsubscribe():
+    observer = SimpleObserver()
+    observable = Observable(events=EVENTS)
 
-#     def test_unregister(self):
-#         self.observable.register('a', self.observer)
-#         self.observable.unregister('a', self.observer)
-#         self.assertTrue(self.observer not in self.observable.get_subscribers('a'))
+    observable.subscribe("a", observer)
+    observable.unsubscribe("a", observer)
 
-#     def test_dispatch(self):
-#         test_observer = TestObserver()
-#         self.observable.register('b', test_observer)
-#         self.observable.dispatch('b')
-#         self.observable.dispatch('b')
+    assert observer not in observable.get_subscribers('a')
+    assert len(observable.get_subscribers('a')) == 0
 
-#         self.assertTrue(test_observer.counter == 2)
+
+def test_dispatch():
+    observer_a = SimpleObserver()
+    observer_b = SimpleObserver()
+    observable = Observable(events=EVENTS)
+
+    observable.subscribe("a", observer_a)
+    observable.subscribe("b", observer_b)
+
+    assert observer_a.counter == 0
+    assert observer_b.counter == 0
+
+    observable.dispatch('b')
+    assert observer_a.counter == 0
+    assert observer_b.counter == 1
+
+    observable.dispatch('a')
+    observable.dispatch('b')
+    assert observer_a.counter == 1
+    assert observer_b.counter == 2
+
+    observable.dispatch('a')
+    observable.dispatch('c')
+    assert observer_a.counter == 2
+    assert observer_a.counter == 2
 
 
 if __name__ == '__main__':
